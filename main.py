@@ -219,42 +219,41 @@ def windows():
             text_par_spec.text = text_par_spec.text.replace('gost', gost_spec_ent.get())
             text_par_spec.text = text_par_spec.text.replace('dost', dost_spec_ent.get())
             text_par_spec.text = text_par_spec.text.replace('posts', posts_spec_ent.get())
-            text_par_spec.text = text_par_spec.text.replace('propissummnds', propissummnds.get())
-            text_par_spec.text = text_par_spec.text.replace('cop', cop.get())
-            text_par_spec.text = text_par_spec.text.replace('porpissnds', propisnds.get())
-            text_par_spec.text = text_par_spec.text.replace('copnds', copnds.get())
+            # text_par_spec.text = text_par_spec.text.replace('propissummnds', propissummnds.get())
+            # text_par_spec.text = text_par_spec.text.replace('cop', cop.get())
+            # text_par_spec.text = text_par_spec.text.replace('porpissnds', propisnds.get())
+            # text_par_spec.text = text_par_spec.text.replace('copnds', copnds.get())
         for tables in document.tables:
             for rows in tables.rows:
                 for cells in rows.cells:
                     for table_par_spec in cells.paragraphs:
                         price = float(price_spec_ent.get())
                         pcs = float(pcs_spec_ent.get())
-                        summ = price*pcs
-                        truncate(summ, 3)
-                        sunds =summ*((float(pnds_spec_ent.get()) / 100) + 1)
-                        truncate(sunds, 3)
-                        snds = sunds-summ
+                        summ = price * pcs
+                        sunds = summ * ((float(pnds_spec_ent.get()) / 100) + 1)
+                        snds = sunds - summ
                         table_par_spec.text = table_par_spec.text.replace('Cult', cult_spec_ent.get())
                         table_par_spec.text = table_par_spec.text.replace('Pcs', pcs_spec_ent.get())
                         table_par_spec.text = table_par_spec.text.replace('price', price_spec_ent.get())
-                        table_par_spec.text = table_par_spec.text.replace('summ', str(pcs*price))
+                        table_par_spec.text = table_par_spec.text.replace('summ', str(truncate(summ, 2)))
                         table_par_spec.text = table_par_spec.text.replace('pnds', pnds_spec_ent.get())
-                        table_par_spec.text = table_par_spec.text.replace('sunds', str(sunds))
-                        table_par_spec.text = table_par_spec.text.replace('snds', str(truncate(snds, 3)))
-                        table_par_spec.text = table_par_spec.text.replace('scomp', scomp.get())
-                        table_par_spec.text = table_par_spec.text.replace('sadres', saddres.get())
-                        table_par_spec.text = table_par_spec.text.replace('sunp', sunp.get())
-                        table_par_spec.text = table_par_spec.text.replace('sn_unp', sn_unp.get())
-                        table_par_spec.text = table_par_spec.text.replace('srs', srs.get())
-                        table_par_spec.text = table_par_spec.text.replace('sbankname', sbankname.get())
-                        table_par_spec.text = table_par_spec.text.replace('sbic', sbic.get())
-                        table_par_spec.text = table_par_spec.text.replace('stel', stel.get())
-                        table_par_spec.text = table_par_spec.text.replace('se-mail', se_mail.get())
-                        table_par_spec.text = table_par_spec.text.replace('sDir', sDir.get())
-                        table_par_spec.text = table_par_spec.text.replace('sIOF', sIOF.get())
+                        table_par_spec.text = table_par_spec.text.replace('sunds', str(truncate(sunds, 2)))
+                        table_par_spec.text = table_par_spec.text.replace('snds', str(truncate(snds, 2)))
+                        table_par_spec.text = table_par_spec.text.replace('scomp', prods.get())
+                        table_par_spec.text = table_par_spec.text.replace('sadres', city_comp.get())
+                        table_par_spec.text = table_par_spec.text.replace('sunp', UNP.get())
+                        table_par_spec.text = table_par_spec.text.replace('sn_unp', n_unp.get())
+                        table_par_spec.text = table_par_spec.text.replace('srs', rs.get())
+                        table_par_spec.text = table_par_spec.text.replace('sbankname', bank_name.get())
+                        table_par_spec.text = table_par_spec.text.replace('sbic', BIC.get())
+                        table_par_spec.text = table_par_spec.text.replace('stel', tel.get())
+                        table_par_spec.text = table_par_spec.text.replace('se-mail', email.get())
+                        table_par_spec.text = table_par_spec.text.replace('sDir', direct.get())
+                        table_par_spec.text = table_par_spec.text.replace('sIOF', iof.get())
         document.save(directory + "\\" + str(file_name_spec.get()) + ".docx")
         os.startfile(directory + "\\" + str(file_name_spec.get()) + ".docx")
         window_s.event_add(exit())
+
     # NUM
     lbl_spec0 = Label(window_s, text="Номер спецификации:")
     lbl_spec0.grid(column=0, row=0)
@@ -320,6 +319,13 @@ def windows():
     lbl_spec12.grid(column=0, row=12)
     pcs_spec_ent = Entry(window_s, width=55)
     pcs_spec_ent.grid(column=1, row=12)
+    lbl_spec_pcs = Label(window_s, text='pcs:')
+    lbl_spec_pcs.grid(column=1, row=15)
+
+    def show_answer():
+        Ans = float(pcs_spec_ent.get()) * float(price_spec_ent.get())
+        blank = Label(window_s, text=str(truncate(Ans, 2)))
+        blank.grid(column=2, row=12)
     #PRICE
     lbl_spec13 = Label(window_s, text="Цена:")
     lbl_spec13.grid(column=0, row=13)
@@ -330,18 +336,22 @@ def windows():
     lbl_spec14.grid(column=0, row=14)
     pnds_spec_ent = Entry(window_s, width=55)
     pnds_spec_ent.grid(column=1, row=14)
-
-
-
+    # PROPISSUMNDS
+    lbl_spec14 = Label(window_s, text="Процент НДС:")
+    lbl_spec14.grid(column=0, row=14)
+    pnds_spec_ent = Entry(window_s, width=55)
+    pnds_spec_ent.grid(column=1, row=14)
     # #PROPISSUMNDS
     # lbl_spec11 = Label(window_s, text="Сумма с НДС прописью:")
     # lbl_spec11.grid(column=0, row=11)
     # propissummnds_spec_ent = Entry(window_s, width=55)
     # propissummnds_spec_ent.grid(column=1, row=11)
+    ent_spec_btn = Button(window_s, text="Высчитать сумму", font=('calibri', 16, 'bold', 'underline'))
+    ent_spec_btn.config(command=show_answer)
+    ent_spec_btn.grid(column=1, row=15)
     ent_spec_btn = Button(window_s, text="Создать спецификацию", font=('calibri', 16, 'bold', 'underline'))
     ent_spec_btn.config(command=text_swipe_spec)
-    ent_spec_btn.config(command=print(file_name.get()))
-    ent_spec_btn.grid(column=1, row=15)
+    ent_spec_btn.grid(column=1, row=16)
 
 
 lbl17 = Label(window, text="Имя файла договора:")
